@@ -95,6 +95,10 @@ State execute(const Node& node, const State& st) { //выполняет опер
 
 vector<Node> parse(const string& fname) { //делает из файла граф
     FILE* f = fopen(fname.c_str(), "r");
+    if (!f) {
+        cerr << "Ошибка: файл " << fname << " не найден" << endl;
+        exit(1);
+    }
     
     vector<pair<int, string> > lines;
     char buf[1024];
@@ -278,10 +282,26 @@ Interval analyze(Interval x, Interval y, const vector<Node>& nodes) { //анал
     return res;
 }
 
-int main() {
-    vector<Node> nodes = parse("testcase_mul.reil");
+int main(int argc, char* argv[]) {
+    string filename = "testcase_mul.reil";
+    vector<Node> nodes = parse(filename);
 
-    vector<pair<Interval,Interval>> tests = {{{1,3},{2,4}},{{4,5},{2,4}},{{2,4},{2,4}}};
+    vector<pair<Interval,Interval>> tests;
+
+    if (argc == 5) {
+        int a = stoi(argv[1]);
+        int b = stoi(argv[2]);
+        int c = stoi(argv[3]);
+        int d = stoi(argv[4]);
+        tests.push_back({{a,b},{c,d}});
+    } else {
+        int a,b,c,d;
+        cout << "первый интервал ";
+        cin >> a >> b;
+        cout << "второй интервал: ";
+        cin >> c >> d;
+        tests.push_back({{a,b},{c,d}});
+    }
 
     for (size_t i = 0; i < tests.size(); i++) {
         Interval x = tests[i].first;
