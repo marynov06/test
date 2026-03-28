@@ -1,0 +1,16 @@
+jg arg0 3 11
+str 0 ret
+# if x < 3
+sub arg0 1 t0
+sub arg1 1 t1
+mul t0 t1 t2
+add t2 1 t3
+str t3 ret
+jmp 16
+# else
+mul arg0 -1 t0
+add t0 6 t1
+add t1 arg1 t2
+str t2 ret
+#endif
+nop
